@@ -16,4 +16,15 @@ public class BoardService {
     public void add(Board board) {
         mapper.insert(board);
     }
+
+    public boolean validate(Board board) {
+        if (board.getTitle() == null || board.getTitle().isEmpty()) {
+            return false;
+        } else if (board.getContent() == null || board.getContent().isEmpty()) {
+            return false;
+        } else if (board.getWriter() == null || board.getWriter().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }
