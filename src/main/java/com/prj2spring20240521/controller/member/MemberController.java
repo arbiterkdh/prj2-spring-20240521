@@ -17,7 +17,6 @@ public class MemberController {
 
     @PostMapping("signup")
     public void signup(@RequestBody Member member) {
-        System.out.println("member = " + member);
-
+        service.add(member);
     }
 }
