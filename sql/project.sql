@@ -26,4 +26,5 @@ CREATE TABLE member
 );
 
 SELECT *
-FROM member;
+FROM member
+ORDER BY id DESC;
