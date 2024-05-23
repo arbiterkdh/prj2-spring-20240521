@@ -46,4 +46,5 @@ ALTER TABLE board
     MODIFY COLUMN member_id INT NOT NULL;
 
 SELECT *
-FROM board;
+FROM board
+ORDER BY id DESC;
