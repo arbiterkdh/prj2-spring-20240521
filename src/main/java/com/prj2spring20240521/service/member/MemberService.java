@@ -4,10 +4,16 @@ import com.prj2spring20240521.domain.member.Member;
 import com.prj2spring20240521.mapper.member.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +22,7 @@ public class MemberService {
 
     final MemberMapper mapper;
     final BCryptPasswordEncoder passwordEncoder;
+    final JwtEncoder jwtEncoder;
 
     public void add(Member member) {
         member.setPassword(passwordEncoder.encode(member.getPassword()));
@@ -73,5 +80,58 @@ public class MemberService {
         }
 
         return passwordEncoder.matches(member.getPassword(), dbMember.getPassword());
+    }
+
+    public void modify(Member member) {
+        if (member.getPassword() != null && member.getPassword().length() > 0) {
+            // 패스워드가 입력되었으니 바꾸기
+            member.setPassword(passwordEncoder.encode(member.getPassword()));
+        } else {
+            // 입력 안됐으니 기존 값으로 유지
+            Member dbMember = mapper.selectById(member.getId());
+            member.setPassword(dbMember.getPassword());
+        }
+        mapper.update(member);
+    }
+
+    public boolean hasAccessModify(Member member) {
+        Member dbMember = mapper.selectById(member.getId());
+        if (dbMember == null) {
+            return false;
+        }
+        if (passwordEncoder.matches(member.getOldPassword(), dbMember.getPassword())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public Map<String, Object> getToken(Member member) {
+
+        Map<String, Object> result = null;
+
+        Member db = mapper.selectByEmail(member.getEmail());
+        if (db != null) {
+            if (passwordEncoder.matches(member.getPassword(), db.getPassword())) {
+                result = new HashMap<>();
+                String token = "";
+                Instant now = Instant.now();
+
+                JwtClaimsSet claims = JwtClaimsSet.builder()
+                        .issuer("self")
+                        .issuedAt(now)
+                        .expiresAt(now.plusSeconds(60 * 60 * 24 * 7))
+                        .subject(member.getEmail())
+                        .claim("scope", "") // 권한
+                        .claim("nickName", db.getNickName())
+                        .build();
+
+                token = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+
+                result.put("token", token);
+            }
+        }
+
+        return result;
     }
 }
