@@ -90,6 +90,10 @@ public class MemberService {
         return passwordEncoder.matches(member.getPassword(), dbMember.getPassword());
     }
 
+    public boolean hasAccess(Integer id, Authentication authentication) {
+        return authentication.getName().equals(id.toString());
+    }
+
     public void modify(Member member) {
         if (member.getPassword() != null && member.getPassword().length() > 0) {
             // 패스워드가 입력되었으니 바꾸기
@@ -142,4 +146,6 @@ public class MemberService {
 
         return result;
     }
+
+
 }
