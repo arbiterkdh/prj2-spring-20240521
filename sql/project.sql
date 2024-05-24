@@ -48,3 +48,14 @@ ALTER TABLE board
 SELECT *
 FROM board
 ORDER BY id DESC;
+
+SELECT *
+FROM member;
+
+DELETE
+FROM board
+WHERE member_id = 15;
+
+DELETE
+FROM member
+WHERE id = 15;
