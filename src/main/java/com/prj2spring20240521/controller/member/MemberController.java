@@ -80,8 +80,11 @@ public class MemberController {
     }
 
     @PutMapping("modify")
-    public ResponseEntity modifyMember(@RequestBody Member member) {
-        if (service.hasAccessModify(member)) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity modifyMember(
+            @RequestBody Member member,
+            Authentication authentication) {
+        if (service.hasAccessModify(member, authentication)) {
             service.modify(member);
             return ResponseEntity.ok().build();
         }

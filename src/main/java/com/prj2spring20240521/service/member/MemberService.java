@@ -106,12 +106,16 @@ public class MemberService {
         mapper.update(member);
     }
 
-    public boolean hasAccessModify(Member member) {
+    public boolean hasAccessModify(Member member, Authentication authentication) {
+        if (!authentication.getName().equals(member.getId().toString())) {
+            return false;
+        }
+
         Member dbMember = mapper.selectById(member.getId());
         if (dbMember == null) {
             return false;
         }
-        if (passwordEncoder.matches(member.getOldPassword(), dbMember.getPassword())) {
+        if (!passwordEncoder.matches(member.getOldPassword(), dbMember.getPassword())) {
             return false;
         }
 
@@ -129,12 +133,16 @@ public class MemberService {
                 String token = "";
                 Instant now = Instant.now();
 
+                List<String> authority = mapper.selectAuthorityByMemberId(db.getId());
+
+                String authorityString = String.join(" ", authority);
+
                 JwtClaimsSet claims = JwtClaimsSet.builder()
                         .issuer("self")
                         .issuedAt(now)
                         .expiresAt(now.plusSeconds(60 * 60 * 24 * 7))
                         .subject(db.getId().toString())
-                        .claim("scope", "") // 권한
+                        .claim("scope", authorityString) // 권한
                         .claim("nickName", db.getNickName())
                         .build();
 
