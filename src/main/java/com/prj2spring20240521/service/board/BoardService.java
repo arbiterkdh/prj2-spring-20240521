@@ -41,12 +41,20 @@ public class BoardService {
         Integer offset = (page - 1) * 10;
         Integer lastPageNumber = (countAll - 1) / 10 + 1;
         Integer leftPageNumber = (page - 1) / 10 * 10 + 1;
-        Integer rightPageNumber = leftPageNumber + 9;
+        Integer rightPageNumber = leftPageNumber + 9 < lastPageNumber ? leftPageNumber + 9 : lastPageNumber;
+        Integer prevPageNumber = leftPageNumber - 1;
+        Integer nextPageNumber = rightPageNumber + 1;
+
+        // todo:
+        //  rightPageNumber 는 lastPageNumber 보다 크지 않도록
+        //  이전, 처음, 다음, 맨끝 버튼 만들기
 
         pageInfo.put("currentPageNumber", page);
         pageInfo.put("lastPageNumber", lastPageNumber);
         pageInfo.put("leftPageNumber", leftPageNumber);
         pageInfo.put("rightPageNumber", rightPageNumber);
+        pageInfo.put("prevPageNumber", prevPageNumber);
+        pageInfo.put("nextPageNumber", nextPageNumber);
 
         return Map.of(
                 "pageInfo", pageInfo,
