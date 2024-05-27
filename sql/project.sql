@@ -73,3 +73,11 @@ VALUES (21, 'admin');
 
 SELECT *
 FROM authority;
+
+SELECT *
+FROM board;
+
+INSERT INTO board
+    (title, content, member_id)
+SELECT title, content, member_id
+FROM board;

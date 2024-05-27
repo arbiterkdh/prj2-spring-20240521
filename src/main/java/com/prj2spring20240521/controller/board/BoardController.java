@@ -32,7 +32,8 @@ public class BoardController {
     }
 
     @GetMapping("list")
-    public List<Board> list() {
+    public List<Board> list(@RequestParam(defaultValue = "1") Integer page) {
+        System.out.println("page = " + page);
         return service.list();
     }
 
@@ -68,7 +69,7 @@ public class BoardController {
         if (!service.hasAccess(board.getId(), authentication)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        
+
         if (service.validate(board)) {
             service.edit(board);
             return ResponseEntity.ok().build();

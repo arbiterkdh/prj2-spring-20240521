@@ -86,8 +86,8 @@ public class MemberController {
             @RequestBody Member member,
             Authentication authentication) {
         if (service.hasAccessModify(member, authentication)) {
-            service.modify(member);
-            return ResponseEntity.ok().build();
+            Map<String, Object> result = service.modify(member, authentication);
+            return ResponseEntity.ok(result);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
