@@ -42,6 +42,7 @@ public class BoardService {
         Integer lastPageNumber = (countAll - 1) / 10 + 1;
         Integer leftPageNumber = (page - 1) / 10 * 10 + 1;
         Integer rightPageNumber = leftPageNumber + 9 < lastPageNumber ? leftPageNumber + 9 : lastPageNumber;
+        leftPageNumber = Math.max(rightPageNumber - 9, 0);
         Integer prevPageNumber = leftPageNumber - 1;
         Integer nextPageNumber = rightPageNumber + 1;
 
