@@ -126,3 +126,6 @@ CREATE TABLE board_file
 SELECT *
 FROM board_file;
 
+ALTER TABLE board_file
+    ADD CONSTRAINT board
+        FOREIGN KEY (board_id) REFERENCES board (id) ON DELETE CASCADE;

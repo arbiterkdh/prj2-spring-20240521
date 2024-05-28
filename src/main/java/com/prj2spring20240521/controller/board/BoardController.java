@@ -60,6 +60,7 @@ public class BoardController {
             @PathVariable Integer id,
             Authentication authentication) {
         if (service.hasAccess(id, authentication)) {
+            Board board = service.get(id);
             service.remove(id);
             return ResponseEntity.ok().build();
         }

@@ -101,6 +101,13 @@ public class BoardService {
     }
 
     public void remove(Integer id) {
+        Board board = mapper.selectById(id);
+        List<String> imageSrcList = board.getImageSrcList();
+
+        for (String imageSrc : imageSrcList) {
+            mapper.deleteByFileName(imageSrc);
+        }
+
         mapper.deleteById(id);
     }
 
