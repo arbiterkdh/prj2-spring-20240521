@@ -69,7 +69,7 @@ public class BoardController {
     @PutMapping("edit")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity edit(
-            @RequestBody Board board,
+            Board board,
             Authentication authentication) {
         if (!service.hasAccess(board.getId(), authentication)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

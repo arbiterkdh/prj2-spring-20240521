@@ -126,3 +126,5 @@ CREATE TABLE board_file
 SELECT *
 FROM board_file;
 
+DESC board_file;
+
