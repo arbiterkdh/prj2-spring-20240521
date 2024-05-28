@@ -59,8 +59,10 @@ public interface BoardMapper {
             <script>
             SELECT b.id,
                    b.title,
-                   m.nick_name writer
+                   m.nick_name writer,
+                   COUNT(f.name) number_of_images
             FROM board b JOIN member m ON b.member_id = m.id
+                         LEFT JOIN board_file f ON f.board_id = b.id
                 <trim prefix="WHERE" prefixOverrides="OR">
                    <bind name="pattern" value="'%' + keyword + '%'" />
                    <if test="searchType == 'all' || searchType == 'text'">
@@ -71,6 +73,7 @@ public interface BoardMapper {
                        OR m.nick_name LIKE #{pattern}
                    </if>
                 </trim>
+            GROUP BY b.id
             ORDER BY b.id DESC
             LIMIT #{offset}, 10
             </script>
