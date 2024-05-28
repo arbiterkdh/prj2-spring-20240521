@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -70,16 +71,17 @@ public class BoardController {
     @PutMapping("edit")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity edit(Board board,
-                               @RequestParam(value = "removeFileList", required = false)
+                               @RequestParam(value = "removeFileList[]", required = false)
                                List<String> removeFileList,
-                               Authentication authentication) {
-
+                               @RequestParam(value = "addFileList[]", required = false)
+                               MultipartFile[] addFileList,
+                               Authentication authentication) throws IOException {
         if (!service.hasAccess(board.getId(), authentication)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         if (service.validate(board)) {
-            service.edit(board, removeFileList);
+            service.edit(board, removeFileList, addFileList);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
