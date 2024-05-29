@@ -102,7 +102,9 @@ public class BoardService {
                 "boardList", mapper.selectAllPaging(offset, searchType, keyword));
     }
 
-    public Board get(Integer id) {
+    public Map<String, Object> get(Integer id, Authentication authentication) {
+        Map<String, Object> result = new HashMap<>();
+
         Board board = mapper.selectById(id);
         List<String> fileNames = mapper.selectFileNameByBoardId(id);
         // 버킷객체 URL/{id}/{name}
@@ -112,7 +114,19 @@ public class BoardService {
 
         board.setFileList(files);
 
-        return board;
+        Map<String, Object> like = new HashMap<>();
+        if (authentication == null) {
+            like.put("like", false);
+        } else {
+            int c = mapper.selectLikeByBoardIdAndMemberId(id, authentication.getName());
+            like.put("like", c == 1);
+        }
+        like.put("count", mapper.selectCountByBoardId(id));
+
+        result.put("board", board);
+        result.put("like", like);
+
+        return result;
     }
 
     public void remove(Integer id) {
@@ -186,7 +200,9 @@ public class BoardService {
         return self;
     }
 
-    public void like(Map<String, Object> req, Authentication authentication) {
+    public Map<String, Object> like(Map<String, Object> req, Authentication authentication) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("like", false);
         Integer boardId = (Integer) req.get("boardId");
         Integer memberId = Integer.valueOf(authentication.getName());
 
@@ -194,8 +210,13 @@ public class BoardService {
         int count = mapper.deleteLikeByBoardIdAndMemberId(boardId, memberId);
 
         // 안했으면
-        if (count > 0) {
+        if (count == 0) {
             mapper.insertLikeByBoardIdAndMemberId(boardId, memberId);
+            result.put("like", true);
         }
+
+        result.put("count", mapper.selectCountByBoardId(boardId));
+
+        return result;
     }
 }
