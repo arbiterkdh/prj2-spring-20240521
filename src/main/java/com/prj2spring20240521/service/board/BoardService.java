@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class BoardService {
 
     private final BoardMapper mapper;
     private final MemberMapper memberMapper;
+    final S3Client s3Client;
 
     public void add(Board board, MultipartFile[] files, Authentication authentication) throws Exception {
         board.setMemberId(Integer.valueOf(authentication.getName()));
