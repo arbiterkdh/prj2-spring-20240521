@@ -48,7 +48,7 @@ public class BoardController {
     // /api/board/6
     @GetMapping("{id}")
     public ResponseEntity get(@PathVariable Integer id) {
-        Map<String, Object> map = service.get(id);
+        Board board = service.get(id);
 
         if (board == null) {
             return ResponseEntity.notFound().build();
@@ -89,9 +89,8 @@ public class BoardController {
 
     @PutMapping("like")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity like(@RequestBody Map<String, Object> req,
-                               Authentication authentication) {
-        Map<String, Object> map = service.like(req, authentication);
-        return ResponseEntity.ok(map);
+    public void like(@RequestBody Map<String, Object> req,
+                     Authentication authentication) {
+        service.like(req, authentication);
     }
 }
