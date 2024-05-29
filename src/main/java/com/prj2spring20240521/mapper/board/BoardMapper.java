@@ -164,5 +164,5 @@ public interface BoardMapper {
             WHERE board_id = #{boardId}
             AND member_id = #{memberId}
             """)
-    int selectLikeByBoardIdAndMemberId(Integer boardId, String memberId);
+    boolean selectLikeByBoardIdAndMemberId(Integer boardId, String memberId);
 }

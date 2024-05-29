@@ -118,8 +118,7 @@ public class BoardService {
         if (authentication == null) {
             like.put("like", false);
         } else {
-            int c = mapper.selectLikeByBoardIdAndMemberId(id, authentication.getName());
-            like.put("like", c == 1);
+            like.put("like", mapper.selectLikeByBoardIdAndMemberId(id, authentication.getName()));
         }
         like.put("count", mapper.selectCountByBoardId(id));
 
