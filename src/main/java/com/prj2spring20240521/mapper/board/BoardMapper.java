@@ -61,10 +61,12 @@ public interface BoardMapper {
                    b.title,
                    m.nick_name writer,
                    COUNT(DISTINCT f.name) number_of_images,
-                   COUNT(DISTINCT l.member_id) number_of_like
+                   COUNT(DISTINCT l.member_id) number_of_like,
+                   COUNT(DISTINCT c.id) number_of_comments
             FROM board b JOIN member m ON b.member_id = m.id
                          LEFT JOIN board_file f ON f.board_id = b.id
                          LEFT JOIN board_like l ON l.board_id = b.id
+                         LEFT JOIN comment c ON c.board_id = b.id
                 <trim prefix="WHERE" prefixOverrides="OR">
                    <bind name="pattern" value="'%' + keyword + '%'" />
                    <if test="searchType == 'all' || searchType == 'text'">
