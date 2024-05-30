@@ -35,9 +35,13 @@ public class CommentService {
             return false;
         }
 
-        if (comment.getMemberId() == null) {
+        if (comment.getBoardId() == null) {
             return false;
         }
         return true;
+    }
+
+    public void remove(Comment comment) {
+        mapper.deleteById(comment.getId());
     }
 }
