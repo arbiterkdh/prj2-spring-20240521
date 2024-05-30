@@ -12,6 +12,7 @@ public class Board {
     private String content;
     private String writer; // 작성자 nickName
     private Integer memberId;
+    private Integer views;
     private LocalDateTime inserted;
 
     private Integer numberOfComments;

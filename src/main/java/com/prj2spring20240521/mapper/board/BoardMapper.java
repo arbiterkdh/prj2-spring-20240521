@@ -27,6 +27,7 @@ public interface BoardMapper {
                    b.title,
                    b.content,
                    b.inserted,
+                   b.views,
                    m.nick_name writer,
                    b.member_id
             FROM board b JOIN member m
@@ -59,6 +60,7 @@ public interface BoardMapper {
             <script>
             SELECT b.id,
                    b.title,
+                   b.views,
                    m.nick_name writer,
                    COUNT(DISTINCT f.name) number_of_images,
                    COUNT(DISTINCT l.member_id) number_of_like,
@@ -190,4 +192,11 @@ public interface BoardMapper {
             WHERE board_id = #{boardId}
             """)
     int deleteCommentByBoardId(Integer boardId);
+
+    @Update("""
+            UPDATE board
+            SET views = views + 1
+            WHERE id = #{id}
+            """)
+    int updateViewsByBoardId(Integer id);
 }

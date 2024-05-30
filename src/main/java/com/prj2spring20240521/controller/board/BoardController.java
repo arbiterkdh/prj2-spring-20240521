@@ -48,11 +48,13 @@ public class BoardController {
     // /api/board/6
     @GetMapping("{id}")
     public ResponseEntity get(@PathVariable Integer id, Authentication authentication) {
+        service.increase(id);
         Map<String, Object> result = service.get(id, authentication);
 
         if (result.get("board") == null) {
             return ResponseEntity.notFound().build();
         }
+
         return ResponseEntity.ok().body(result);
     }
 

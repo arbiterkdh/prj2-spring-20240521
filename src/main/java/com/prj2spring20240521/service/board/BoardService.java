@@ -224,4 +224,8 @@ public class BoardService {
 
         return result;
     }
+
+    public void increase(Integer id) {
+        mapper.updateViewsByBoardId(id);
+    }
 }
