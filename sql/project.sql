@@ -133,3 +133,9 @@ CREATE TABLE board_like
     member_id INT NOT NULL REFERENCES member (id),
     PRIMARY KEY (board_id, member_id)
 );
+
+SELECT b.id, COUNT(DISTINCT f.name), COUNT(DISTINCT l.member_id)
+FROM board b
+         JOIN member m ON b.member_id = m.id
+         LEFT JOIN board_file f ON b.id = f.board_id
+         LEFT JOIN board_like l ON b.id = l.board_id;
