@@ -22,5 +22,5 @@ public interface CommentMapper {
             FROM comment
             WHERE board_id = #{boardId}
             """)
-    List<Comment> selectCommentByBoardId(Integer id);
+    List<Comment> selectCommentByBoardId(Integer boardId);
 }
