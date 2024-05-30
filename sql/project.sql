@@ -152,3 +152,6 @@ CREATE TABLE comment
 
 SELECT *
 FROM comment;
+
+SELECT *
+FROM member;
