@@ -21,7 +21,7 @@ public interface CommentMapper {
             SELECT *
             FROM comment
             WHERE board_id = #{boardId}
-            ORDER BY id
+            ORDER BY id DESC
             """)
     List<Comment> selectAllByBoardId(Integer boardId);
 }
