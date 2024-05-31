@@ -44,4 +44,16 @@ public class CommentService {
     public void remove(Comment comment) {
         mapper.deleteById(comment.getId());
     }
+
+    public boolean hasAccess(Comment comment, Authentication authentication) {
+        if (authentication.getName().equals(mapper.selectMemberId(comment.getId()))) {
+            return true;
+        }
+        return false;
+    }
+
+    public void modify(Comment comment) {
+        String commentText = comment.getComment();
+        mapper.update(commentText, comment.getId());
+    }
 }
