@@ -69,7 +69,7 @@ CREATE TABLE authority
 );
 
 INSERT INTO authority (member_id, name)
-VALUES (21, 'admin');
+VALUES (9, 'admin');
 
 SELECT *
 FROM authority;
